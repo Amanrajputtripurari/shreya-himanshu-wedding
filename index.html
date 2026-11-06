@@ -2155,11 +2155,30 @@
       }
 
       /* ---------- cover frame around the names ---------- */
+      function freezeFrame(svg) {
+        svg.querySelectorAll('.ln').forEach(p => {
+          p.style.animation = 'none';
+          p.style.strokeDashoffset = '0';
+        });
+        svg.querySelectorAll('.orn').forEach(p => {
+          p.style.animation = 'none';
+          p.style.opacity = '1';
+        });
+      }
+
       function drawFrame(svg, gid, cls, color, fill) {
+        if (!svg) return;
         const b = svg.getBoundingClientRect(),
           w = b.width,
           h = b.height;
         if (w < 24 || h < 24) return;
+        const sizeKey = `${Math.round(w)}:${Math.round(h)}`;
+        const card = svg.closest('.orn-card');
+        const lockDraw = (card && card.classList.contains('in')) ||
+          (svg.id === 'nameFrame' && document.body.classList.contains('opened'));
+        if (svg.dataset.frameBuilt === '1' && svg.dataset.frameSize === sizeKey) return;
+        svg.dataset.frameSize = sizeKey;
+        svg.dataset.frameBuilt = '1';
         svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
         const ah = Math.min(w * .42, h * (fill ? .30 : .36), fill ? 128 : 9999),
           x = 6,
@@ -2183,6 +2202,7 @@
           }
         }
         svg.innerHTML = s;
+        if (lockDraw) freezeFrame(svg);
       }
 
       /* ---------- seal ---------- */
@@ -2242,18 +2262,28 @@
         document.querySelectorAll('.orn-frame').forEach(svg => drawFrame(svg, 'og' + svg.dataset.frame, 'ln', gold, paper));
       }
       drawAll();
-      let rz;
+      let rz, lastFrameWidth = window.innerWidth;
       const redraw = () => {
         clearTimeout(rz);
-        rz = setTimeout(drawAll, 150);
+        rz = setTimeout(() => {
+          if (Math.abs(window.innerWidth - lastFrameWidth) < 2) return;
+          lastFrameWidth = window.innerWidth;
+          drawAll();
+        }, 150);
       };
       window.addEventListener('resize', redraw);
-      window.addEventListener('load', redraw);
-      document.querySelectorAll('img').forEach(img => {
-        if (!img.complete) img.addEventListener('load', redraw);
+      window.addEventListener('load', () => {
+        lastFrameWidth = window.innerWidth;
+        drawAll();
       });
       const scheme = window.matchMedia('(prefers-color-scheme: dark)');
-      if (scheme.addEventListener) scheme.addEventListener('change', redraw);
+      if (scheme.addEventListener) scheme.addEventListener('change', () => {
+        document.querySelectorAll('.orn-frame, #nameFrame, #coverFrame').forEach(s => {
+          delete s.dataset.frameBuilt;
+          delete s.dataset.frameSize;
+        });
+        drawAll();
+      });
 
       /* ---------- opening ---------- */
       const open = document.getElementById('opening');
