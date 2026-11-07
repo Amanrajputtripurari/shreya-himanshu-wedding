@@ -342,7 +342,7 @@
 
     .cover-frame {
       position: relative;
-      width: min(350px, 84vw);
+      width: min(420px, 84vw);
       padding: clamp(78px, 22vw, 104px) 26px 34px
     }
 
@@ -383,7 +383,7 @@
     .door-content h1 {
       font-family: var(--display);
       font-weight: 400;
-      font-size: clamp(40px, 11vw, 64px);
+      font-size: clamp(40px, 11vw, 58px);
       line-height: 1.05;
       margin: 12px 0 0;
       background: linear-gradient(180deg, #FFF3D2 0%, #F3C56A 55%, #D49A2A 100%);
@@ -2155,6 +2155,55 @@
       font-size: 17px
     }
 
+    /* scroll cue: centred, no link underline, readable */
+    .scroll-cue {
+      text-decoration: none;
+      margin-left: auto;
+      margin-right: auto;
+      width: fit-content;
+      max-width: 100%;
+      text-align: center
+    }
+
+    @media (max-width:480px) {
+      .scroll-cue {
+        max-width: min(100%, 22ch);
+        font-size: 16px
+      }
+
+      html[lang="hi"] .scroll-cue {
+        font-size: 17px;
+        max-width: 100%
+      }
+
+      html[lang="hi"] .name-frame {
+        padding-top: clamp(88px, 25vw, 112px);
+        padding-bottom: 34px
+      }
+
+      .lang-switch {
+        top: calc(8px + env(safe-area-inset-top, 0px));
+        right: calc(8px + env(safe-area-inset-right, 0px))
+      }
+
+      .lang-switch button {
+        font-size: 14px;
+        min-width: 40px;
+        min-height: 30px;
+        padding: 0 10px
+      }
+    }
+
+    body.scrolled .lang-switch {
+      opacity: .6;
+      transition: opacity .3s
+    }
+
+    body.scrolled .lang-switch:hover,
+    body.scrolled .lang-switch:focus-within {
+      opacity: 1
+    }
+
     /* ---------- extra safety: image loading + mobile overflow ---------- */
     img {
       height: auto
@@ -2171,8 +2220,14 @@
     p,
     .names,
     .btn {
-      overflow-wrap: anywhere;
+      overflow-wrap: break-word;
+      word-break: normal;
       min-width: 0
+    }
+
+    .door-content h1,
+    .names {
+      overflow-wrap: normal
     }
 
     .couple>*,
@@ -2230,6 +2285,115 @@
       .btn {
         font-size: 15px
       }
+    }
+
+    /* ---------- unified card padding (all screens) ---------- */
+    :root {
+      --card-pt: clamp(100px, 26vw, 124px);
+      --card-px: clamp(24px, 7vw, 36px);
+      --card-pb: clamp(40px, 9vw, 50px)
+    }
+
+    .person,
+    .event .info,
+    .venue-card,
+    .clock-frame,
+    .closing-card {
+      padding: var(--card-pt) var(--card-px) var(--card-pb)
+    }
+
+    .clock-frame {
+      padding-left: clamp(18px, 5vw, 30px);
+      padding-right: clamp(18px, 5vw, 30px)
+    }
+
+    .event .info,
+    .event:nth-child(even) .info {
+      margin-top: 0
+    }
+
+    html[lang="hi"] .closing-card {
+      padding-top: calc(var(--card-pt) + 10px)
+    }
+
+    /* ---------- fluid font scale (phone -> desktop, no jumps) ---------- */
+    :root {
+      --fs-body: clamp(17px, .35vw + 15.8px, 20px);
+      --fs-text: clamp(16px, .3vw + 14.9px, 18.5px);
+      --fs-lead: clamp(17px, .45vw + 15.5px, 21px);
+      --fs-small: clamp(14px, .2vw + 13.3px, 16px)
+    }
+
+    body {
+      font-size: var(--fs-body)
+    }
+
+    .hero-intro,
+    .sub {
+      font-size: var(--fs-lead)
+    }
+
+    .info .day,
+    .when {
+      font-size: clamp(17px, .4vw + 15.6px, 20px)
+    }
+
+    .info .line,
+    .person p,
+    .venue-body p,
+    .cd-note,
+    .regards {
+      font-size: var(--fs-text)
+    }
+
+    .person .role,
+    .info .n {
+      font-size: clamp(15px, .3vw + 14px, 17px)
+    }
+
+    .hero-date span {
+      font-size: clamp(15px, .35vw + 13.8px, 18px)
+    }
+
+    .hero-date b {
+      font-size: clamp(48px, 9vw, 68px)
+    }
+
+    .blessing {
+      font-size: clamp(20px, 1vw + 17px, 24px)
+    }
+
+    .door-content p {
+      font-size: clamp(16px, .45vw + 14.6px, 19px)
+    }
+
+    .seal-label,
+    .scroll-cue {
+      font-size: clamp(15px, .3vw + 14px, 17px)
+    }
+
+    .btn {
+      font-size: clamp(15px, .35vw + 13.9px, 18px)
+    }
+
+    .unit small {
+      font-size: clamp(12px, .5vw + 10px, 15px)
+    }
+
+    .regards strong {
+      font-size: clamp(24px, 1vw + 20px, 30px)
+    }
+
+    footer {
+      font-size: var(--fs-small)
+    }
+
+    html[lang="hi"] .seal-label {
+      font-size: clamp(15px, .3vw + 14px, 17px)
+    }
+
+    html[lang="hi"] .scroll-cue {
+      font-size: clamp(16px, .3vw + 15px, 18px)
     }
   </style>
 </head>
