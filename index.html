@@ -2395,6 +2395,25 @@
     html[lang="hi"] .scroll-cue {
       font-size: clamp(16px, .3vw + 15px, 18px)
     }
+
+    /* hero date block: always centred inside the name frame */
+    .hero-date {
+      margin-left: auto;
+      margin-right: auto;
+      justify-items: center;
+      text-align: center
+    }
+
+    .hero-date span {
+      width: 100%
+    }
+
+    @media (max-width:480px) {
+      .hero-date {
+        width: min(100%, 280px);
+        max-width: 280px
+      }
+    }
   </style>
 </head>
 
